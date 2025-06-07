@@ -1,29 +1,16 @@
 # Write your MySQL query statement below
+SELECT "Low Salary" AS category,
+    SUM(CASE WHEN income < 20000 THEN 1 ELSE 0 END) AS accounts_count
+FROM Accounts
 
--- cte:
-WITH category_counts AS (
-    SELECT 
-        account_id,
-        CASE 
-            WHEN income < 20000 THEN "Low Salary" 
-            WHEN income > 50000 THEN "High Salary"
-            ELSE "Average Salary" 
-        END AS category
-    FROM Accounts
-),
+UNION ALL
 
-all_categories AS (
-    SELECT "Low Salary" AS category
-    UNION 
-    SELECT "Average Salary"
-    UNION 
-    SELECT "High Salary"
-)
+SELECT 'Average Salary' AS category,
+    SUM(CASE WHEN income >= 20000 AND income <= 50000 THEN 1 ELSE 0 END) AS accounts_count
+FROM Accounts
 
--- main query:
-SELECT 
-    a.category,
-    COUNT(c.account_id) AS accounts_count
-FROM all_categories a
-LEFT JOIN category_counts c ON a.category = c.category
-GROUP BY a.category 
+UNION ALL
+
+SELECT 'High Salary' AS category,
+    SUM(CASE WHEN income > 50000 THEN 1 ELSE 0 END) AS accounts_count
+FROM Accounts;
