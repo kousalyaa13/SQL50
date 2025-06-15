@@ -7,4 +7,5 @@ FROM Patients
 WHERE conditions LIKE "% DIAB1%" 
     OR conditions LIKE "DIAB1%";
 
--- find "DIAB1" anywhere in the string, not just the beginning, so we need to use a pattern match, using REGEX
+-- LIKE "DIAB1%" matches any string that starts with "DIAB1"
+-- LIKE "% DIAB1%" matches any string that has " DIAB1" (note the leading space) somewhere in the middle
